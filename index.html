@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rohan Gandhi's Blog</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            max-width: 800px;
+            margin: auto;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header, main {
+            padding: 20px;
+        }
+        nav {
+            background-color: #333;
+            padding: 10px 20px;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: flex-start;
+        }
+        nav ul li {
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+        nav ul li a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .hidden {
+            display: none;
+        }
+        .post, #post-list, #about {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background-color: #007bff;
+            width: 0%;
+            transition: width 0.2s;
+        }
+        .post-link {
+            display: block;
+            margin-bottom: 15px;
+            text-decoration: none;
+            color: #333;
+        }
+        .post-link:hover {
+            background-color: #f0f0f0;
+        }
+        .post-link h3 {
+            margin: 0;
+            color: #007bff;
+        }
+        .post-link p {
+            margin: 5px 0 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .built-with {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+        @media (max-width: 600px) {
+            nav ul {
+                flex-direction: column;
+            }
+            nav ul li {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="progress-bar"></div>
+    <header>
+        <h1>Rohan Gandhi</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#" onclick="showSection('home'); return false;">Home</a></li>
+            <li><a href="#" onclick="showSection('about'); return false;">About</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section id="home">
+            <div id="post-list">
+                <a href="#" class="post-link" onclick="showPost(0); return false;">
+                    <h3>First Post Dummy Title</h3>
+                    <p>First Post Dummy Description/p>
+                </a>
+            </div>
+            <article id="post0" class="post hidden">
+                <h2>First Post Dummy Title</h2>
+                <p>First Post Dummy Paragraph</p>
+            </article>
+        </section>
+        <section id="about" class="hidden">
+            <h2>About Me</h2>
+            <p>Welcome to my blog. I'm a computers and software enthusiast using this platform to jot down my thoughts and communicate them to a wider audience.</p>
+            <div class="built-with">
+                <p>I built this blog using Claude 3.5, an AI assistant created by Anthropic. The goal was to build a no frill minimalistic site that just does what it's supposed to, nothing else.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const totalPosts = 3;
+        let currentSection = 'home';
+
+        function showSection(sectionId) {
+            document.querySelectorAll('main > section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+            document.getElementById('post-list').classList.remove('hidden');
+            document.querySelectorAll('.post').forEach(post => post.classList.add('hidden'));
+            currentSection = sectionId;
+            updateProgressBar();
+        }
+
+        function showPost(postId) {
+            document.getElementById('post-list').classList.add('hidden');
+            document.querySelectorAll('.post').forEach(post => post.classList.add('hidden'));
+            document.getElementById(`post${postId}`).classList.remove('hidden');
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const progressBar = document.getElementById('progress-bar');
+            const article = document.querySelector('.post:not(.hidden)');
+            if (currentSection === 'home' && article) {
+                window.addEventListener('scroll', () => {
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    const scrolled = (scrollTop / scrollHeight) * 100;
+                    progressBar.style.width = scrolled + '%';
+                });
+                progressBar.style.display = 'block';
+            } else {
+                progressBar.style.display = 'none';
+            }
+        }
+
+        // Initial setup
+        showSection('home');
+    </script>
+</body>
+</html>
